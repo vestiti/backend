@@ -1,7 +1,8 @@
 package springweb.ecommerce.entity;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import springweb.ecommerce.constant.ItemSellStatus;
 
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "item")
 @Getter
-@Setter
+@NoArgsConstructor
 @ToString
 public class Item {
     @Id
@@ -37,4 +38,13 @@ public class Item {
 
     private LocalDateTime regTime;
     private LocalDateTime updateTime;
+
+    @Builder
+    public Item(String itemName, int price, int stockNumber, String itemDetail, ItemSellStatus itemSellStatus) {
+        this.itemName = itemName;
+        this.price = price;
+        this.stockNumber = stockNumber;
+        this.itemDetail = itemDetail;
+        this.itemSellStatus = itemSellStatus;
+    }
 }
