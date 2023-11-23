@@ -1,5 +1,7 @@
 package springweb.ecommerce.repository;
 
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,7 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import springweb.ecommerce.constant.ItemSellStatus;
 import springweb.ecommerce.entity.Item;
+import springweb.ecommerce.entity.QItem;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,6 +25,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ItemRepositoryTest {
     @Autowired
     ItemRepository itemRepository;
+
+    @PersistenceContext
+    EntityManager em;
 
     @AfterEach
     public void cleanUp() {
@@ -102,7 +110,7 @@ class ItemRepositoryTest {
 
         //then
         for (Item item : itemList) {
-            log.info("item = {}", item.toString());
+            System.out.println(item.toString());
         }
     }
 
@@ -133,6 +141,27 @@ class ItemRepositoryTest {
         //then
         for (Item item : itemList) {
             assertThat(item.getItemDetail()).contains("테스트 상품 설명");
+        }
+    }
+
+    @Test
+    @DisplayName("QueryDsl 조회 테스트1")
+    public void queryDslTest() {
+        //given
+        this.createItemList();
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QItem qItem = QItem.item;
+        JPAQuery<Item> query = queryFactory.selectFrom(qItem)
+                .where(qItem.itemSellStatus.eq(ItemSellStatus.SELL))
+                .where(qItem.itemDetail.like("%" + "테스트 상품 설명" + "%"))
+                .orderBy(qItem.price.desc());
+
+        //when
+        List<Item> itemList = query.fetch();
+
+        //then
+        for(Item item : itemList) {
+            System.out.println(item.toString());
         }
     }
 }
