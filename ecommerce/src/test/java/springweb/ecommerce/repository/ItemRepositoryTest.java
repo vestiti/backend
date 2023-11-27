@@ -1,5 +1,6 @@
 package springweb.ecommerce.repository;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +9,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
+import org.thymeleaf.util.StringUtils;
 import springweb.ecommerce.constant.ItemSellStatus;
 import springweb.ecommerce.entity.Item;
 import springweb.ecommerce.entity.QItem;
@@ -42,6 +47,28 @@ class ItemRepositoryTest {
                     .itemDetail("테스트 상품 설명 " + i)
                     .itemSellStatus(ItemSellStatus.SELL)
                     .stockNumber(100)
+                    .build());
+        }
+    }
+
+    private void createItemList2() {
+        for (int i = 1; i <= 5; i++) {
+            itemRepository.save(Item.builder()
+                    .itemName("테스트 상품 " + i)
+                    .price(10000 + i)
+                    .itemDetail("테스트 상품 설명 " + i)
+                    .itemSellStatus(ItemSellStatus.SELL)
+                    .stockNumber(100)
+                    .build());
+        }
+
+        for (int i = 6; i <= 10; i++) {
+            itemRepository.save(Item.builder()
+                    .itemName("테스트 상품 " + i)
+                    .price(10000 + i)
+                    .itemDetail("테스트 상품 설명 " + i)
+                    .itemSellStatus(ItemSellStatus.SOLD_OUT)
+                    .stockNumber(0)
                     .build());
         }
     }
@@ -163,5 +190,34 @@ class ItemRepositoryTest {
         for(Item item : itemList) {
             System.out.println(item.toString());
         }
+    }
+
+    @Test
+    @DisplayName("상품 Querydsl 조회 테스트 2")
+    public void queryDslTest2() {
+        //given
+        this.createItemList2();
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        QItem item = QItem.item;
+        String itemDetail = "테스트 상품 설명";
+        int price = 10003;
+        String itemSellStat = "SELL";
+
+
+        //when
+        booleanBuilder.and(item.itemDetail.like("%" + itemDetail + "%"));
+        booleanBuilder.and(item.price.gt(price));
+
+        if(StringUtils.equals(itemSellStat, ItemSellStatus.SELL)) {
+            booleanBuilder.and(item.itemSellStatus.eq(ItemSellStatus.SELL));
+        }
+
+        //then
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<Item> itemPageResult = itemRepository.findAll(booleanBuilder, pageable);
+        System.out.println("total elements : " + itemPageResult.getTotalElements());
+
+        List<Item> resultItemList = itemPageResult.getContent();
+        assertThat(resultItemList.size()).isEqualTo(2);
     }
 }
