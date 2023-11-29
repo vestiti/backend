@@ -42,4 +42,9 @@ public class ThymeleafController {
         model.addAttribute("itemDtoList", itemDtoList);
         return "thymeleaf/test2";
     }
+
+    @GetMapping("/test3")
+    public String thymeleafTest3() {
+        return "thymeleaf/test3";
+    }
 }
