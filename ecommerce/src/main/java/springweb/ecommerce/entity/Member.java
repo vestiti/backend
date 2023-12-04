@@ -4,7 +4,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import springweb.ecommerce.constant.Role;
+import springweb.ecommerce.dto.MemberFormDto;
 
 import javax.persistence.*;
 
@@ -37,5 +39,16 @@ public class Member {
         this.password = password;
         this.address = address;
         this.role = role;
+    }
+
+    public static Member createMember(MemberFormDto memberFormDto,
+                                      PasswordEncoder passwordEncoder) {
+        return Member.builder()
+                .name(memberFormDto.getName())
+                .email(memberFormDto.getEmail())
+                .address(memberFormDto.getAddress())
+                .password(passwordEncoder.encode(memberFormDto.getPassword()))
+                .role(Role.USER)
+                .build();
     }
 }
