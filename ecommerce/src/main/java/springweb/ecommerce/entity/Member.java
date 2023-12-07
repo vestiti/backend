@@ -1,9 +1,6 @@
 package springweb.ecommerce.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import springweb.ecommerce.constant.Role;
 import springweb.ecommerce.dto.MemberFormDto;
@@ -13,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "member")
 @Getter
+@Setter
 @NoArgsConstructor
 @ToString
 public class Member {
@@ -41,8 +39,7 @@ public class Member {
         this.role = role;
     }
 
-    public static Member createMember(MemberFormDto memberFormDto,
-                                      PasswordEncoder passwordEncoder) {
+    public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) {
         return Member.builder()
                 .name(memberFormDto.getName())
                 .email(memberFormDto.getEmail())
