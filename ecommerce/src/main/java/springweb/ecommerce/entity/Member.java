@@ -45,7 +45,7 @@ public class Member {
                 .email(memberFormDto.getEmail())
                 .address(memberFormDto.getAddress())
                 .password(passwordEncoder.encode(memberFormDto.getPassword()))
-                .role(Role.USER)
+                .role(Role.ADMIN)
                 .build();
     }
 }
