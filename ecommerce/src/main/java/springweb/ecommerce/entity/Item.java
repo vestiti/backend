@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @ToString
-public class Item {
+public class Item extends BaseEntity {
     @Id
     @Column(name = "item_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,9 +35,6 @@ public class Item {
 
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus;
-
-    private LocalDateTime regTime;
-    private LocalDateTime updateTime;
 
     @Builder
     public Item(String itemName, int price, int stockNumber, String itemDetail, ItemSellStatus itemSellStatus) {
