@@ -1,9 +1,6 @@
 package springweb.ecommerce.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import springweb.ecommerce.constant.ItemSellStatus;
 
 import javax.persistence.*;
@@ -12,6 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "item")
 @Getter
+@Setter
 @NoArgsConstructor
 @ToString
 public class Item extends BaseEntity {
