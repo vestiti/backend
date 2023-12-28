@@ -9,6 +9,9 @@ import org.thymeleaf.util.StringUtils;
 import springweb.ecommerce.entity.ItemImg;
 import springweb.ecommerce.repository.ItemImgRepository;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -34,5 +37,23 @@ public class ItemImgService {
 
         itemImg.updateItemImage(originalImageName, imageName, imageUrl);
         itemImgRepository.save(itemImg);
+    }
+
+    public void updateItemImg(Long itemImgId, MultipartFile itemImgFile) throws Exception {
+        if(!itemImgFile.isEmpty()) {
+            ItemImg savedItemImg = itemImgRepository.findById(itemImgId)
+                    .orElseThrow(EntityNotFoundException::new);
+
+            if(!StringUtils.isEmpty(savedItemImg.getImageName())) {
+                fileService.deleteFile(itemImgLocation + "/"
+                        + savedItemImg.getImageName());
+            }
+
+            String originalImageName = itemImgFile.getOriginalFilename();
+            String imageName = fileService.uploadFile(itemImgLocation, originalImageName,
+                    itemImgFile.getBytes());
+            String imageUrl = "/images/item/" + imageName;
+            savedItemImg.updateItemImage(originalImageName, imageName, imageUrl);
+        }
     }
 }

@@ -2,6 +2,7 @@ package springweb.ecommerce.entity;
 
 import lombok.*;
 import springweb.ecommerce.constant.ItemSellStatus;
+import springweb.ecommerce.dto.ItemFormDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -41,5 +42,13 @@ public class Item extends BaseEntity {
         this.stockNumber = stockNumber;
         this.itemDetail = itemDetail;
         this.itemSellStatus = itemSellStatus;
+    }
+
+    public void updateItem(ItemFormDto itemFormDto) {
+        this.itemName = itemFormDto.getItemName();
+        this.price = itemFormDto.getPrice();
+        this.stockNumber = itemFormDto.getStockNumber();
+        this.itemDetail = itemFormDto.getItemDetail();
+        this.itemSellStatus = itemFormDto.getItemSellStatus();
     }
 }
