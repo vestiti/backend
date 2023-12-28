@@ -1,11 +1,14 @@
 package springweb.ecommerce.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import springweb.ecommerce.dto.ItemFormDto;
 import springweb.ecommerce.dto.ItemImgDto;
+import springweb.ecommerce.dto.ItemSearchDto;
 import springweb.ecommerce.entity.Item;
 import springweb.ecommerce.entity.ItemImg;
 import springweb.ecommerce.repository.ItemImgRepository;
@@ -75,5 +78,10 @@ public class ItemService {
         }
 
         return item.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+        return itemRepository.getAdminItemPage(itemSearchDto, pageable);
     }
 }
