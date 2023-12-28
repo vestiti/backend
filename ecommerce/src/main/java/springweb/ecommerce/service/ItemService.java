@@ -70,7 +70,7 @@ public class ItemService {
 
         List<Long> itemImageIdList = itemFormDto.getItemImageIdList();
 
-        for(int i = 0; i < itemImageIdList.size(); i++) {
+        for(int i = 0; i < itemImgFileList.size(); i++) {
             itemImgService.updateItemImg(itemImageIdList.get(i), itemImgFileList.get(i));
         }
 
