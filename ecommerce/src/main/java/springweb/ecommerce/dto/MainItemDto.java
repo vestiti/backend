@@ -18,8 +18,8 @@ public class MainItemDto {
     private Integer price;
 
     @QueryProjection
-    public MainItemDto(Long id, String itemName, String itemDetail,
-                       String imgUrl, Integer price) {
+    public MainItemDto(Long id, String itemName, String itemDetail, String imgUrl,
+                       Integer price) {
         this.id = id;
         this.itemName = itemName;
         this.itemDetail = itemDetail;
