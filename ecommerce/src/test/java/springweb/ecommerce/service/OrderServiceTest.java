@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import springweb.ecommerce.constant.ItemSellStatus;
+import springweb.ecommerce.constant.OrderStatus;
 import springweb.ecommerce.dto.OrderDto;
 import springweb.ecommerce.entity.Item;
 import springweb.ecommerce.entity.Member;
@@ -77,5 +78,25 @@ class OrderServiceTest {
         int totalPrice = orderDto.getCount() * item.getPrice();
 
         assertThat(totalPrice).isEqualTo(order.getTotalPrice());
+    }
+
+    @Test
+    @DisplayName("주문 취소 테스트")
+    public void cancelOrderTest() {
+        Item item = saveItem();
+        Member member = saveMember();
+
+        OrderDto orderDto = new OrderDto();
+        orderDto.setCount(10);
+        orderDto.setItemId(item.getId());
+
+        Long orderId = orderService.order(orderDto, member.getEmail());
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(EntityNotFoundException::new);
+        orderService.cancelOrder(order.getId());
+
+        assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.CANCEL);
+        assertThat(item.getStockNumber()).isEqualTo(100);
     }
 }

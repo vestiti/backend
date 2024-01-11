@@ -1,12 +1,9 @@
 package springweb.ecommerce.entity;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
@@ -40,5 +37,9 @@ public class OrderItem extends BaseEntity {
 
     public int getTotalPrice() {
         return orderPrice * count;
+    }
+
+    public void cancel() {
+        this.getItem().addStock(count);
     }
 }
