@@ -19,7 +19,6 @@ import springweb.ecommerce.repository.MemberRepository;
 import javax.persistence.EntityNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
