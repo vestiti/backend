@@ -3,7 +3,6 @@ package springweb.ecommerce.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import springweb.ecommerce.dto.CartDetailDto;
-import springweb.ecommerce.dto.CartItemDto;
 import springweb.ecommerce.entity.CartItem;
 
 import java.util.List;
