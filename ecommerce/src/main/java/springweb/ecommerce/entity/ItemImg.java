@@ -15,21 +15,21 @@ public class ItemImg extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String imageName;
+    private String imgName;
 
-    private String originalImageName;
+    private String originalImgName;
 
-    private String imageUrl;
+    private String imgUrl;
 
-    private String representImageYn;
+    private String representImgYn;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
 
-    public void updateItemImage(String originalImageName, String imageName, String imageUrl) {
-        this.originalImageName = originalImageName;
-        this.imageName = imageName;
-        this.imageUrl = imageUrl;
+    public void updateItemImage(String originalImgName, String imgName, String imgUrl) {
+        this.originalImgName = originalImgName;
+        this.imgName = imgName;
+        this.imgUrl = imgUrl;
     }
 }
