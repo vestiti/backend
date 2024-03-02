@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.StringUtils;
-import springweb.ecommerce.dto.ItemImgDto;
 import springweb.ecommerce.dto.OrderDto;
 import springweb.ecommerce.dto.OrderHistDto;
 import springweb.ecommerce.dto.OrderItemDto;
@@ -59,7 +58,7 @@ public class OrderService {
             for(OrderItem orderItem : orderItems) {
                 ItemImg itemImg = itemImgRepository
                         .findByItemIdAndRepresentImageYn(orderItem.getItem().getId(), "Y");
-                OrderItemDto orderItemDto = new OrderItemDto(orderItem, itemImg.getImageUrl());
+                OrderItemDto orderItemDto = new OrderItemDto(orderItem, itemImg.getImgUrl());
                 orderHistDto.addOrderItemDto(orderItemDto);
             }
 
